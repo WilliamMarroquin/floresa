@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/flowers.png" type="image/x-icon">
+    <title>Mensaje Especial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        /* Efecto de espacio con puntos blancos */
+        .space {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 1000px;
+            z-index: 10;
+        }
+        
+        .title {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            color: yellow;
+            text-shadow: 0 0 10px yellow, 0 0 20px yellow;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 2s, transform 2s;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .message {
+            font-size: 2rem;
+            margin: 30px 0;
+            color: #fff;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 2s, transform 2s;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .message.red {
+            color: yellow;
+            text-shadow: 0 0 10px yellow, 0 0 20px yellow;
+        }
+        
+        .button {
+            margin-top: 50px;
+            opacity: 0;
+            transition: opacity 2s;
+        }
+        
+        .button.visible {
+            opacity: 1;
+        }
+        
+        .btn {
+            background: transparent;
+            border: 2px solid #9900ff;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            color: #9500ff;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 0, 0, 0.2);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.9);
+            transform: scale(1.05);
+        }
+        
+        .hacker-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hacker-effect::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background-color: #a6c91a;
+            animation: blink 0.8s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .message {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 12px 30px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="space" id="space"></div>
+    
+    <div class="container">
+        <h1 class="title hacker-effect" id="title">FELIZ DÍA DE LAS FLORES AMARILLAS</h1>
+        <p class="message red" id="message1">AMOR MÍO ❤️</p>
+        <p class="message red" id="message3">🥰SHARELYN CELESTE GUDIEL CASTAÑEDA🥰</p>
+        <p class="message" id="message2">TENGO UN REGALO ESPECIAL PARA TI 😺</p>
+        
+        <div class="button" id="button">
+            <button class="btn" onclick="location.href='index1.html'">
+                VER TU REGALO 🎁
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Crear efecto de espacio con partículas
+        function createSpace() {
+            const space = document.getElementById('space');
+            
+            // Crear partículas
+            for (let i = 0; i < 100; i++) {
+                createParticle(space);
+            }
+            
+            // Continuar creando partículas
+            setInterval(() => {
+                createParticle(space);
+            }, 200);
+        }
+        
+        function createParticle(container) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Tamaño aleatorio entre 1 y 3px
+            const size = Math.random() * 2 + 1;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            // Posición aleatoria en X
+            particle.style.left = Math.random() * 100 + '%';
+            
+            // Duración aleatoria entre 5 y 15 segundos
+            const duration = Math.random() * 10 + 5;
+            particle.style.animationDuration = duration + 's';
+            
+            // Retraso aleatorio
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            
+            container.appendChild(particle);
+            
+            // Eliminar la partícula después de que termine la animación
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.remove();
+                }
+            }, duration * 1000 + 1000);
+        }
+        
+        // Mostrar elementos secuencialmente
+        function showElements() {
+            const title = document.getElementById('title');
+            const message1 = document.getElementById('message1');
+            const message3 = document.getElementById('message3');
+            const message2 = document.getElementById('message2');
+            const button = document.getElementById('button');
+            
+            setTimeout(() => {
+                title.classList.add('visible');
+            }, 1000);
+            
+            setTimeout(() => {
+                message1.classList.add('visible');
+            }, 3000);
+            
+            setTimeout(() => {
+                message3.classList.add('visible');
+            }, 3000);
+
+            setTimeout(() => {
+                message2.classList.add('visible');
+            }, 6000);
+            
+            setTimeout(() => {
+                button.classList.add('visible');
+            }, 9000);
+        }
+        
+        // Inicializar
+        window.onload = function() {
+            createSpace();
+            showElements();
+        };
+    </script>
+</body>
+</html>

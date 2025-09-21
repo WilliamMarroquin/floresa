@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="img/flowers.png" type="image/x-icon">
+    <title>FLORES PROTEGIDAS</title>
+    <style>
+        /* Estilos para los puntitos amarillos */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: #ffff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00;
+            animation: fall linear infinite;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) translateX(0);
+            }
+            100% {
+                transform: translateY(100vh) translateX(30px);
+            }
+        }
+
+        .container {
+            position: relative;
+            overflow: hidden;
+        }
+
+       /* Aura morada gigante que cubre la página */
+body::before {
+    content: "";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300vw;  /* Más ancho que la pantalla */
+    height: 170vh; /* Más alto que la pantalla */
+    background: radial-gradient(
+        circle,
+        rgba(138, 43, 226, 0.15) 0%,       /* Morado claro */
+        rgba(75, 0, 130, 0.1) 40%,        /* Índigo */
+        rgba(0, 0, 0, 0) 70%              /* Transparente */
+    );
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.7;
+    animation: aura-expand 8s infinite ease-in-out;
+    pointer-events: none; /* Para no interferir con clicks */
+}
+
+/* Efecto de expansión del aura */
+@keyframes aura-expand {
+    0% {
+        transform: translate(-50%, -50%) scale(0.95);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0.95);
+        opacity: 0.5;
+    }
+}
+
+/* Ajustar el z-index de las partículas para que no se superpongan mal */
+.particles {
+    z-index: 10;
+}
+.flowers {
+    position: relative;
+    z-index: 5; /* Las flores sobre el aura pero bajo las partículas */
+}
+
+/* Efecto de aura que sube y forma texto */
+.aura-text {
+    position: fixed;
+    top: 2%; /* Posicionado más arriba */
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0;
+    z-index: 20;
+    pointer-events: none;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.aura-text span {
+    display: inline-block;
+    color: #8a2be2; /* Morado */
+    text-shadow: 0 0 10px #8a2be2, 0 0 20px #8a2be2;
+    font-size: 32px; /* Texto más grande */
+    opacity: 0;
+    transform: translateY(20px);
+    margin: 5px 0;
+}
+
+/* Cursor parpadeante */
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 32px;
+    background-color: #8a2be2;
+    margin-left: 5px;
+    animation: blink 0.7s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+
+/* Cambiar el color de las raíces (tallos) a verde */
+.flower__line {
+    background-color: #107b17  !important; /* Verde marino */
+    box-shadow: 0 0 5px #107b17 , 0 0 10px #107b17 !important;
+}
+
+
+
+/* Estilo hacker para el texto final */
+.final-message {
+    position: fixed;
+    top: 2%; /* Posicionado más arriba */
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    color: #8a2be2;
+    text-shadow: 0 0 15px #8a2be2;
+    opacity: 0;
+    z-index: 30;
+    pointer-events: none;
+    font-size: 32px; /* Texto más grande */
+    line-height: 1.6;
+    white-space: pre-line;
+    max-width: 90%;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.final-message.active {
+    color: red;
+    text-shadow: 
+        0 0 20px red, 
+        0 0 40px red, 
+        0 0 80px red,
+        0 0 100px red; 
+    animation: text-pulse 0.5s infinite alternate;
+}
+
+@keyframes text-pulse {
+    from {
+        text-shadow: 0 0 30px yellow, 0 0 50px yellow;
+    }
+    to {
+        text-shadow: 0 0 40px yellow, 0 0 70px yellow, 0 0 100px yellow; 
+    }
+}
+
+/* Modificaciones para la flor morada con pétalos rojos */
+.flower__leaf {
+    background-color: #0ca518 !important; /* Morado */
+    box-shadow: 0 0 10px #0ca518, 0 0 20px #0ca518 !important;
+}
+
+.flower__leaf::before {
+    background-color: #26b31f !important; /* Rojo */
+    box-shadow: 0 0 10px #4cb12d, 0 0 20px #0ea42c !important;
+}
+
+.flower__light {
+    background-color: yellow !important; /* Morado */
+    box-shadow: 0 0 5px yellow, 0 0 10px #ccea08 !important;
+}
+
+/* Aura que sube desde la flor */
+.flower-aura {
+    position: fixed; /* Cambiado a fixed para que cubra toda la pantalla */
+    bottom: -100vh; /* Comienza desde muy abajo (fuera de pantalla) */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1200px; /* Más ancho */
+    height: 150vh; /* Muy alto para cubrir toda la pantalla */
+    background: linear-gradient(to top, 
+              rgba(238, 246, 7, 0.9) 0%,
+              rgba(211, 214, 12, 0.6) 30%,
+              rgba(139, 157, 5, 0.3) 60%,
+              transparent 90%);
+    border-radius: 50% 50% 0 0;
+    filter: blur(30px); /* Más difuminado */
+    z-index: 15;
+    opacity: 1; /* Siempre visible cuando está activa */
+    transition: bottom 1.5s ease-out; /* Aparece rápido */
+}
+
+    </style>
+</head>
+
+<body class="container">
+    <!-- Elementos para los efectos de texto -->
+    <div class="aura-text" id="aura-text"></div>
+    <div class="final-message" id="final-message"></div>
+
+    <div class="night"></div>
+    <div class="particles" id="particles"></div>
+    <div class="flowers">
+      <div class="flower flower--1"><div class="flower__leafs flower__leafs--1"><div class="flower__leaf flower__leaf--1"></div><div class="flower__leaf flower__leaf--2"></div><div class="flower__leaf flower__leaf--3"></div><div class="flower__leaf flower__leaf--4"></div><div class="flower__white-circle"></div><div class="flower__light flower__light--1"></div><div class="flower__light flower__light--2"></div><div class="flower__light flower__light--3"></div><div class="flower__light flower__light--4"></div><div class="flower__light flower__light--5"></div><div class="flower__light flower__light--6"></div><div class="flower__light flower__light--7"></div><div class="flower__light flower__light--8"></div></div><div class="flower__line"><div class="flower__line__leaf flower__line__leaf--1"></div><div class="flower__line__leaf flower__line__leaf--2"></div><div class="flower__line__leaf flower__line__leaf--3"></div><div class="flower__line__leaf flower__line__leaf--4"></div><div class="flower__line__leaf flower__line__leaf--5"></div><div class="flower__line__leaf flower__line__leaf--6"></div></div></div>
+      <div class="flower flower--2"><div class="flower__leafs flower__leafs--2"><div class="flower__leaf flower__leaf--1"></div><div class="flower__leaf flower__leaf--2"></div><div class="flower__leaf flower__leaf--3"></div><div class="flower__leaf flower__leaf--4"></div><div class="flower__white-circle"></div><div class="flower__light flower__light--1"></div><div class="flower__light flower__light--2"></div><div class="flower__light flower__light--3"></div><div class="flower__light flower__light--4"></div><div class="flower__light flower__light--5"></div><div class="flower__light flower__light--6"></div><div class="flower__light flower__light--7"></div><div class="flower__light flower__light--8"></div></div><div class="flower__line"><div class="flower__line__leaf flower__line__leaf--1"></div><div class="flower__line__leaf flower__line__leaf--2"></div><div class="flower__line__leaf flower__line__leaf--3"></div><div class="flower__line__leaf flower__line__leaf--4"></div></div></div>
+      <div class="flower flower--3"><div class="flower__leafs flower__leafs--3"><div class="flower__leaf flower__leaf--1"></div><div class="flower__leaf flower__leaf--2"></div><div class="flower__leaf flower__leaf--3"></div><div class="flower__leaf flower__leaf--4"></div><div class="flower__white-circle"></div><div class="flower__light flower__light--1"></div><div class="flower__light flower__light--2"></div><div class="flower__light flower__light--3"></div><div class="flower__light flower__light--4"></div><div class="flower__light flower__light--5"></div><div class="flower__light flower__light--6"></div><div class="flower__light flower__light--7"></div><div class="flower__light flower__light--8"></div></div><div class="flower__line"><div class="flower__line__leaf flower__line__leaf--1"></div><div class="flower__line__leaf flower__line__leaf--2"></div><div class="flower__line__leaf flower__line__leaf--3"></div><div class="flower__line__leaf flower__line__leaf--4"></div></div></div>
+      <div class="grow-ans" style="--d:1.2s"><div class="flower__g-long"><div class="flower__g-long__top"></div><div class="flower__g-long__bottom"></div></div></div>
+      <div class="growing-grass"><div class="flower__grass flower__grass--1"><div class="flower__grass--top"></div><div class="flower__grass--bottom"></div><div class="flower__grass__leaf flower__grass__leaf--1"></div><div class="flower__grass__leaf flower__grass__leaf--2"></div><div class="flower__grass__leaf flower__grass__leaf--3"></div><div class="flower__grass__leaf flower__grass__leaf--4"></div><div class="flower__grass__leaf flower__grass__leaf--5"></div><div class="flower__grass__leaf flower__grass__leaf--6"></div><div class="flower__grass__leaf flower__grass__leaf--7"></div><div class="flower__grass__leaf flower__grass__leaf--8"></div><div class="flower__grass__overlay"></div></div></div>
+      <div class="growing-grass"><div class="flower__grass flower__grass--2"><div class="flower__grass--top"></div><div class="flower__grass--bottom"></div><div class="flower__grass__leaf flower__grass__leaf--1"></div><div class="flower__grass__leaf flower__grass__leaf--2"></div><div class="flower__grass__leaf flower__grass__leaf--3"></div><div class="flower__grass__leaf flower__grass__leaf--4"></div><div class="flower__grass__leaf flower__grass__leaf--5"></div><div class="flower__grass__leaf flower__grass__leaf--6"></div><div class="flower__grass__leaf flower__grass__leaf--7"></div><div class="flower__grass__leaf flower__grass__leaf--8"></div><div class="flower__grass__overlay"></div></div></div>
+      <div class="grow-ans" style="--d:2.4s"><div class="flower__g-right flower__g-right--1"><div class="leaf"></div></div></div>
+      <div class="grow-ans" style="--d:2.8s"><div class="flower__g-right flower__g-right--2"><div class="leaf"></div></div></div>
+      <div class="grow-ans" style="--d:2.8s"><div class="flower__g-front"><div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--1"><div class="flower__g-front__leaf"></div></div><div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--2"><div class="flower__g-front__leaf"></div></div><div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--3"><div class="flower__g-front__leaf"></div></div><div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--4"><div class="flower__g-front__leaf"></div></div><div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--5"><div class="flower__g-front__leaf"></div></div><div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--6"><div class="flower__g-front__leaf"></div></div><div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--7"><div class="flower__g-front__leaf"></div></div><div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--8"><div class="flower__g-front__leaf"></div></div><div class="flower__g-front__line"></div></div></div>
+      <div class="grow-ans" style="--d:3.2s"><div class="flower__g-fr"><div class="leaf"></div><div class="flower__g-fr__leaf flower__g-fr__leaf--1"></div><div class="flower__g-fr__leaf flower__g-fr__leaf--2"></div><div class="flower__g-fr__leaf flower__g-fr__leaf--3"></div><div class="flower__g-fr__leaf flower__g-fr__leaf--4"></div><div class="flower__g-fr__leaf flower__g-fr__leaf--5"></div><div class="flower__g-fr__leaf flower__g-fr__leaf--6"></div><div class="flower__g-fr__leaf flower__g-fr__leaf--7"></div><div class="flower__g-fr__leaf flower__g-fr__leaf--8"></div></div></div>
+      <div class="long-g long-g--0"><div class="grow-ans" style="--d:3s"><div class="leaf leaf--0"></div></div><div class="grow-ans" style="--d:2.2s"><div class="leaf leaf--1"></div></div><div class="grow-ans" style="--d:3.4s"><div class="leaf leaf--2"></div></div><div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div></div>
+      <div class="long-g long-g--1"><div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--0"></div></div><div class="grow-ans" style="--d:3.8s"><div class="leaf leaf--1"></div></div><div class="grow-ans" style="--d:4s"><div class="leaf leaf--2"></div></div><div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--3"></div></div></div>
+      <div class="long-g long-g--2"><div class="grow-ans" style="--d:4s"><div class="leaf leaf--0"></div></div><div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--1"></div></div><div class="grow-ans" style="--d:4.4s"><div class="leaf leaf--2"></div></div><div class="grow-ans" style="--d:4.6s"><div class="leaf leaf--3"></div></div></div>
+      <div class="long-g long-g--3"><div class="grow-ans" style="--d:4s"><div class="leaf leaf--0"></div></div><div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--1"></div></div><div class="grow-ans" style="--d:3s"><div class="leaf leaf--2"></div></div><div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div></div>
+      <div class="long-g long-g--4"><div class="grow-ans" style="--d:4s"><div class="leaf leaf--0"></div></div><div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--1"></div></div><div class="grow-ans" style="--d:3s"><div class="leaf leaf--2"></div></div><div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div></div>
+      <div class="long-g long-g--5"><div class="grow-ans" style="--d:4s"><div class="leaf leaf--0"></div></div><div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--1"></div></div><div class="grow-ans" style--d:3s"><div class="leaf leaf--2"></div></div><div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div></div>
+      <div class="long-g long-g--6"><div class="grow-ans" style="--d:4.2s"><div class="leaf leaf--0"></div></div><div class="grow-ans" style="--d:4.4s"><div class="leaf leaf--1"></div></div><div class="grow-ans" style="--d:4.6s"><div class="leaf leaf--2"></div></div><div class="grow-ans" style="--d:4.8s"><div class="leaf leaf--3"></div></div></div>
+      <div class="long-g long-g--7"><div class="grow-ans" style="--d:3s"><div class="leaf leaf--0"></div></div><div class="grow-ans" style="--d:3.2s"><div class="leaf leaf--1"></div></div><div class="grow-ans" style="--d:3.5s"><div class="leaf leaf--2"></div></div><div class="grow-ans" style="--d:3.6s"><div class="leaf leaf--3"></div></div></div>
+    </div>
+    
+    <!-- Audio -->
+    <audio id="background-music" loop>
+        <source src="audio.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+    
+    <script>
+        // Iniciar todo automáticamente al cargar la página
+        window.addEventListener('load', function() {
+            const backgroundMusic = document.getElementById('background-music');
+            
+            // Reproducir música automáticamente
+            backgroundMusic.play().catch(error => {
+                console.log('Reproducción automática prevenida:', error);
+                // En caso de que falle la reproducción automática, mostrar un mensaje
+                alert('Por favor, haz clic en cualquier parte de la página para iniciar la música');
+                document.body.addEventListener('click', function() {
+                    backgroundMusic.play();
+                }, { once: true });
+            });
+            
+            // Iniciar las partículas después de 3 segundos
+            setTimeout(startParticles, 3000);
+            
+            // Iniciar la secuencia de efectos después de 8 segundos
+            setTimeout(startEffectsSequence, 8000);
+        });
+
+        // Código para las partículas amarillas
+        let PARTICLE_INTENSITY = 50;
+        let PARTICLE_SPAWN_RATE = 500;
+        const PARTICLE_SPEED = 0.5; // Más lento que la lluvia
+        const WIND_INTENSITY = 20; // Menos viento que para la lluvia
+        let particleInterval;
+
+        function startParticles() {
+            const particles = document.getElementById('particles');
+            for (let i = 0; i < PARTICLE_INTENSITY; i++) {
+                createParticle();
+            }
+            let intensityIncreaseInterval = setInterval(() => {
+                PARTICLE_INTENSITY += 20;
+                PARTICLE_SPAWN_RATE = Math.max(40, PARTICLE_SPAWN_RATE - 30);
+                for (let i = 0; i < 10; i++) {
+                    createParticle();
+                }
+                if (PARTICLE_INTENSITY > 400 && PARTICLE_SPAWN_RATE <= 50) {
+                    clearInterval(intensityIncreaseInterval);
+                    PARTICLE_INTENSITY = 600;
+                    PARTICLE_SPAWN_RATE = 40;
+                    clearInterval(particleInterval);
+                    particleInterval = setInterval(createParticle, PARTICLE_SPAWN_RATE);
+                } else if (!particleInterval) {
+                    particleInterval = setInterval(createParticle, PARTICLE_SPAWN_RATE);
+                }
+            }, 1000);
+            setInterval(() => {
+                const wind = (Math.random() * WIND_INTENSITY * 2) - WIND_INTENSITY;
+                document.documentElement.style.setProperty('--wind', `${wind}px`);
+            }, 2000);
+        }
+
+        function createParticle() {
+            const particles = document.getElementById('particles');
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Tamaño aleatorio entre 2px y 6px
+            const size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            // Opacidad aleatoria
+            const opacity = Math.random() * 0.7 + 0.3;
+            particle.style.opacity = opacity;
+            
+            // Posición aleatoria
+            const left = Math.random() * 100;
+            
+            // Duración aleatoria (más lenta que la lluvia)
+            const duration = Math.random() * PARTICLE_SPEED + PARTICLE_SPEED;
+            
+            // Retraso aleatorio
+            const delay = Math.random() * 2;
+            
+            // Inclinación aleatoria
+            const tilt = (Math.random() * 20) - 10;
+            
+            // Viento aleatorio
+            const wind = (Math.random() * WIND_INTENSITY) - (WIND_INTENSITY / 2);
+            
+            particle.style.left = left + 'vw';
+            particle.style.animationDelay = delay + 's';
+            particle.style.animationDuration = duration + 's';
+            particle.style.transform = `rotate(${tilt}deg)`;
+            particle.style.setProperty('--wind', `${wind}px`);
+            
+            particles.appendChild(particle);
+            
+            // Eliminar la partícula después de que termine la animación
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.remove();
+                }
+            }, (duration + delay) * 1000);
+        }
+        
+        // Efectos de aura y texto
+        function startEffectsSequence() {
+            // Crear aura que sube desde la flor
+            const flower = document.querySelector('.flower--1');
+            const aura = document.createElement('div');
+            aura.className = 'flower-aura';
+            document.body.appendChild(aura);
+            
+            // Animación del aura
+            aura.style.opacity = '1';
+            aura.style.height = '0';
+            aura.style.transition = 'height 8s ease-out, opacity 8s ease-out';
+            
+            setTimeout(() => {
+              aura.style.bottom = '0';
+            }, 50);
+            // Mostrar texto con efecto hacker
+            setTimeout(() => {
+                showHackerText();
+            }, 2000);
+            
+            // Eliminar el aura después de la animación
+            setTimeout(() => {
+                aura.style.opacity = '0';
+                setTimeout(() => {
+                    aura.remove();
+                }, 1000);
+            }, 8000);
+        }
+        
+        function showHackerText() {
+            const message = "Mas hermosa que las flores eres tu mi niña, te amo a bb ❤️";
+            const auraText = document.getElementById('aura-text');
+            const finalMessage = document.getElementById('final-message');
+            
+            // Mostrar el contenedor de texto
+            auraText.style.opacity = '1';
+            
+            // Crear cursor inicial
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            auraText.appendChild(cursor);
+            
+            // Dividir el mensaje en caracteres para un efecto de escritura más lento
+            const characters = message.split('');
+            let currentIndex = 0;
+            
+            // Función para mostrar caracteres uno por uno
+            function showNextCharacter() {
+                if (currentIndex < characters.length) {
+                    // Si es el primer carácter o el anterior era un espacio, crear un nuevo span
+                    if (currentIndex === 0 || characters[currentIndex-1] === ' ') {
+                        const wordSpan = document.createElement('span');
+                        auraText.insertBefore(wordSpan, cursor);
+                    }
+                    
+                    // Agregar el carácter actual al último span
+                    const lastSpan = auraText.querySelector('span:not(.cursor)');
+                    lastSpan.textContent += characters[currentIndex];
+                    
+                    // Animación de entrada
+                    setTimeout(() => {
+                        lastSpan.style.opacity = '1';
+                        lastSpan.style.transform = 'translateY(0)';
+                    }, 50);
+                    
+                    currentIndex++;
+                    
+                    // Mostrar siguiente carácter después de un retraso mayor (más lento)
+                    setTimeout(showNextCharacter, 150)+2000; // Más lento que antes (150ms por carácter)
+                } else {
+                    // Todos los caracteres mostrados, eliminar cursor
+                    cursor.remove();
+                    
+                    // Transición al mensaje final
+                    setTimeout(() => {
+                        auraText.style.opacity = '0';
+                        auraText.style.transition = 'opacity 1s ease-out';
+                        
+                        setTimeout(() => {
+                            finalMessage.textContent = message;
+                            finalMessage.style.opacity = '1';
+                            finalMessage.style.transition = 'opacity 1s ease-in';
+                            
+                            // Cambiar a rojo brillante después de 3 segundos
+                            setTimeout(() => {
+                                finalMessage.classList.add('active');
+                            }, 3000);
+                        }, 1000);
+                    }, 2000);
+                }
+            }
+            
+            // Iniciar la secuencia
+            showNextCharacter();
+        }
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>
